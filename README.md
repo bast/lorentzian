@@ -6,6 +6,8 @@
 
 Primitive script to convert raw x-y data to Lorentzian shapes.
 
+![](example/spectrum.png "example spectrum")
+
 Example:
 
 ```shell
