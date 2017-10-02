@@ -8,7 +8,7 @@ from optparse import OptionParser, OptionGroup
 def parse_input(argv):
 
     parser = OptionParser(usage='./%prog --xy=example/xy.stick > example/output')
-    
+
     group = OptionGroup(parser, 'Basic options')
     group.add_option('--xy',
                      action='store',
@@ -40,7 +40,7 @@ def parse_input(argv):
         # user has given no arguments and we are not in a test subdir: print help and exit
         print(parser.format_help().strip())
         sys.exit()
-    
+
     return parser.parse_args()
 
 #-------------------------------------------------------------------------------
@@ -71,30 +71,38 @@ def get_lorentzians(x_l, f_l, i_l, hwhm):
 
 #-------------------------------------------------------------------------------
 
+def get_xy(options, x, y):
+
+    # create list of x values
+    x_l = []
+    _x = options.min
+    x_l.append(_x)
+    while True:
+        _x += options.step
+        if _x > options.max:
+            break
+        else:
+           x_l.append(_x)
+
+    y_l = get_lorentzians(x_l, x, y, options.hwhm)
+
+    return x_l, y_l
+
+
 def main():
 
     (options, args) = parse_input(sys.argv)
 
     # read energies and intensities from options.xy
-    f_l = []
-    i_l = []
-    for line in open(options.xy).readlines():
-        f_l.append(float(line.split()[0]))
-        i_l.append(float(line.split()[1]))
-    
-    # create list of x values
-    x_l = []
-    x = options.min
-    x_l.append(x)
-    while True:
-        x += options.step
-        if x > options.max:
-            break
-        else:
-           x_l.append(x)
-    
-    y_l = get_lorentzians(x_l, f_l, i_l, options.hwhm)
-    
+    x = []
+    y = []
+    with open(options.xy, 'r') as f:
+        for line in f.readlines():
+            x.append(float(line.split()[0]))
+            y.append(float(line.split()[1]))
+
+    x_l, y_l = get_xy(options, x, y)
+
     # write lorentzians to stdout
     for i in range(len(x_l)):
         print("%f %f" % (x_l[i], y_l[i]))
