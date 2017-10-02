@@ -66,46 +66,45 @@ def get_lorentzians(x_l, f_l, i_l, hwhm):
 
 #-------------------------------------------------------------------------------
 
-def get_xy(options, x, y):
+def get_xy(options, xs, ys):
 
     # create list of x values
-    x_l = []
-    _x = options.min
-    x_l.append(_x)
+    xs_l = []
+    x = options.min
+    xs_l.append(x)
     while True:
-        _x += options.step
-        if _x > options.max:
+        x += options.step
+        if x > options.max:
             break
         else:
-           x_l.append(_x)
+           xs_l.append(x)
 
-    y_l = get_lorentzians(x_l, x, y, options.hwhm)
+    ys_l = get_lorentzians(xs_l, xs, ys, options.hwhm)
 
-    return x_l, y_l
+    return xs_l, ys_l
 
 
 def extract_numbers(file_name):
-    x = []
-    y = []
+    xs = []
+    ys = []
     with open(file_name, 'r') as f:
         for line in f.readlines():
-            x.append(float(line.split()[0]))
-            y.append(float(line.split()[1]))
-    return x, y
+            xs.append(float(line.split()[0]))
+            ys.append(float(line.split()[1]))
+    return xs, ys
 
 
 def main():
 
     (options, args) = parse_input(sys.argv)
 
-    x, y = extract_numbers(options.xy)
-    x_l, y_l = get_xy(options, x, y)
+    xs, ys = extract_numbers(options.xy)
+    xs_l, ys_l = get_xy(options, xs, ys)
 
     # write lorentzians to stdout
-    for i in range(len(x_l)):
-        print("%f %f" % (x_l[i], y_l[i]))
+    for (x, y) in zip(xs_l, ys_l):
+        print('{0} {1}'.format(x, y))
 
-#-------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     main()
