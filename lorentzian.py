@@ -1,4 +1,6 @@
 import sys
+import os
+import pytest
 from optparse import OptionParser, OptionGroup
 
 
@@ -101,6 +103,36 @@ def main():
     # write lorentzians to stdout
     for (x, y) in zip(xs_l, ys_l):
         print('{0} {1}'.format(x, y))
+
+
+def test_get_xy():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    xs, ys = extract_numbers(os.path.join(dir_path, 'example/xy.stick'))
+    xs_l, ys_l = get_xy(xs, ys, 1000.0, 1010.0, 1.0, 8.0)
+    xs_ref = [1000.0,
+              1001.0,
+              1002.0,
+              1003.0,
+              1004.0,
+              1005.0,
+              1006.0,
+              1007.0,
+              1008.0,
+              1009.0,
+              1010.0]
+    ys_ref = [0.9254792082596345,
+              0.9308467383851173,
+              0.9427902142236957,
+              0.959026667736806,
+              0.9763696378531916,
+              0.991143768020725,
+              0.9998484853505051,
+              1.0,
+              0.9908763518591084,
+              0.9737925731302556,
+              0.9517298450973274]
+    assert xs_l == pytest.approx(xs_ref)
+    assert ys_l == pytest.approx(ys_ref)
 
 
 if __name__ == '__main__':
