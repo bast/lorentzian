@@ -9,7 +9,7 @@ Primitive script to convert raw x-y data to Lorentzian shapes.
 Example:
 
 ```shell
-$ python lorentzian.py --xy=example/xy.stick > example/output
+$ python lorentzian.py --xy=example/xy.stick --x-min=1000.0 --x-max=1800.0 > example/output
 ```
 
 To see all options:
