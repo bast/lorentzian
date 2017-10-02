@@ -70,7 +70,7 @@ def main(xy, x_min, x_max, x_step, hwhm):
 
 def test_get_xy():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    xs, ys = extract_numbers(os.path.join(dir_path, 'example/xy.stick'))
+    xs, ys = extract_numbers(os.path.join(dir_path, 'example/1.xy'))
     xs_l, ys_l = get_xy(xs, ys, 1000.0, 1010.0, 1.0, 8.0)
     xs_ref = [1000.0,
               1001.0,
