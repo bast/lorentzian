@@ -42,28 +42,21 @@ def parse_input(argv):
 
     return parser.parse_args()
 
-#-------------------------------------------------------------------------------
 
 def normalize(l):
     largest = max(l)
     for i in range(len(l)):
-        l[i] = l[i]/largest
+        l[i] = l[i] / largest
     return l
 
-#-------------------------------------------------------------------------------
 
-def get_lorentzians(x_l, f_l, i_l, hwhm):
+def get_lorentzians(xs_l, xs, ys, hwhm):
+    ys_l = [0.0 for x in xs_l]
+    for i in range(len(xs_l)):
+        for j in range(len(xs)):
+            ys_l[i] = ys_l[i] + ys[j] / (1 + (((xs_l[i] - xs[j]) / hwhm)**2.0))
+    return normalize(ys_l)
 
-    y_l = []
-    for i in range(len(x_l)):
-        y_l.append(0.0)
-    for i in range(len(x_l)):
-        for j in range(len(f_l)):
-            y_l[i] = y_l[i] + i_l[j]/(1 + (((x_l[i] - f_l[j])/hwhm)**2.0))
-
-    return normalize(y_l)
-
-#-------------------------------------------------------------------------------
 
 def get_xy(xs, ys, x_min, x_max, x_step, hwhm):
 
@@ -76,7 +69,7 @@ def get_xy(xs, ys, x_min, x_max, x_step, hwhm):
         if x > x_max:
             break
         else:
-           xs_l.append(x)
+            xs_l.append(x)
 
     ys_l = get_lorentzians(xs_l, xs, ys, hwhm)
 
