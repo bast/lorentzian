@@ -46,14 +46,9 @@ def parse_input(argv):
 #-------------------------------------------------------------------------------
 
 def normalize(l):
-
-    largest = 0.0
-    for i in range(len(l)):
-        if abs(l[i]) > largest:
-            largest = abs(l[i])
+    largest = max(l)
     for i in range(len(l)):
         l[i] = l[i]/largest
-
     return l
 
 #-------------------------------------------------------------------------------
