@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-
 import sys
 from optparse import OptionParser, OptionGroup
 
-#-------------------------------------------------------------------------------
 
 def parse_input(argv):
 
@@ -66,20 +63,20 @@ def get_lorentzians(x_l, f_l, i_l, hwhm):
 
 #-------------------------------------------------------------------------------
 
-def get_xy(options, xs, ys):
+def get_xy(xs, ys, x_min, x_max, x_step, hwhm):
 
     # create list of x values
     xs_l = []
-    x = options.min
+    x = x_min
     xs_l.append(x)
     while True:
-        x += options.step
-        if x > options.max:
+        x += x_step
+        if x > x_max:
             break
         else:
            xs_l.append(x)
 
-    ys_l = get_lorentzians(xs_l, xs, ys, options.hwhm)
+    ys_l = get_lorentzians(xs_l, xs, ys, hwhm)
 
     return xs_l, ys_l
 
@@ -99,7 +96,7 @@ def main():
     (options, args) = parse_input(sys.argv)
 
     xs, ys = extract_numbers(options.xy)
-    xs_l, ys_l = get_xy(options, xs, ys)
+    xs_l, ys_l = get_xy(xs, ys, options.min, options.max, options.step, options.hwhm)
 
     # write lorentzians to stdout
     for (x, y) in zip(xs_l, ys_l):
