@@ -89,18 +89,21 @@ def get_xy(options, x, y):
     return x_l, y_l
 
 
+def extract_numbers(file_name):
+    x = []
+    y = []
+    with open(file_name, 'r') as f:
+        for line in f.readlines():
+            x.append(float(line.split()[0]))
+            y.append(float(line.split()[1]))
+    return x, y
+
+
 def main():
 
     (options, args) = parse_input(sys.argv)
 
-    # read energies and intensities from options.xy
-    x = []
-    y = []
-    with open(options.xy, 'r') as f:
-        for line in f.readlines():
-            x.append(float(line.split()[0]))
-            y.append(float(line.split()[1]))
-
+    x, y = extract_numbers(options.xy)
     x_l, y_l = get_xy(options, x, y)
 
     # write lorentzians to stdout
