@@ -51,10 +51,10 @@ def normalize(l):
 
 
 def get_lorentzians(xs_l, xs, ys, hwhm):
-    ys_l = [0.0 for x in xs_l]
-    for i in range(len(xs_l)):
-        for j in range(len(xs)):
-            ys_l[i] = ys_l[i] + ys[j] / (1 + (((xs_l[i] - xs[j]) / hwhm)**2.0))
+    ys_l = [0.0 for _ in xs_l]
+    for i, x_l in enumerate(xs_l):
+        for j, x in enumerate(xs):
+            ys_l[i] = ys_l[i] + ys[j] / (1 + (((x_l - x) / hwhm)**2.0))
     return normalize(ys_l)
 
 
